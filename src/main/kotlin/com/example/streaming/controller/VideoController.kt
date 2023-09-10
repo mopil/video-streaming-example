@@ -1,17 +1,24 @@
-package com.example.streaming
+package com.example.streaming.controller
 
+import com.example.streaming.service.VideoService
+import com.example.streaming.model.mongo.Video
 import org.springframework.core.io.support.ResourceRegion
 import org.springframework.http.*
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 
 @RestController
 class VideoController(
         private val videoService: VideoService
 ) {
+    @PostMapping("/videos")
+    fun uploadVideo(
+            @RequestParam("video") videoFile: MultipartFile
+    ): Video {
+        return videoService.uploadVideo(videoFile)
+    }
+
     @GetMapping("/videos/{videoName}")
     fun getVideo(
             @RequestHeader headers: HttpHeaders,
